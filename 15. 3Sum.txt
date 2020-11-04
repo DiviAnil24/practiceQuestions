@@ -1,0 +1,87 @@
+Given an array nums of n integers, are there elements a, b, c in nums such that a + b + c = 0? Find all unique triplets in the array which gives the sum of zero.
+
+Notice that the solution set must not contain duplicate triplets.
+
+ 
+
+Example 1:
+
+Input: nums = [-1,0,1,2,-1,-4]
+Output: [[-1,-1,2],[-1,0,1]]
+Example 2:
+
+Input: nums = []
+Output: []
+Example 3:
+
+Input: nums = [0]
+Output: []
+ 
+
+Constraints:
+
+0 <= nums.length <= 3000
+-105 <= nums[i] <= 105                                                         class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        int n,i,j;
+	/*cin>>n;
+	vector<int> nums;
+	for(i=0;i<n;i++){
+		cin>>j;
+		nums.push_back(j);
+	}*/
+	n= nums.size();
+	vector< vector<int> > fans;
+	vector<int> ans;
+	sort(nums.begin(),nums.end());
+	if(n<3)
+		return fans;
+	else if(n==3)
+	{
+		if(nums[0]+nums[1]+nums[2]==0){
+			fans.push_back(nums);
+		}
+		return fans;
+	}
+	else{
+		set< vector<int> > st;
+		for(i=0;i<n-3;i++){
+			int x=-1*nums[i],low=i+1,high=n-1;
+			while(low<high){
+				if(nums[low]+nums[high] > x)
+					high--;
+				else if(nums[low]+nums[high] < x)
+					low++;
+				else{
+					ans.push_back(nums[i]);
+					ans.push_back(nums[low]);
+					ans.push_back(nums[high]);
+					sort(ans.begin(),ans.end());
+					set< vector<int> > :: iterator ist;
+					ist = st.find(ans);
+					if(ist == st.end()){
+						st.insert(ans);
+						fans.push_back(ans);
+					}
+					high--;
+					low++;
+					ans.clear();
+				}			
+			}
+		} 
+	}
+	return fans;
+	/*vector< vector<int> > ::iterator it;
+	vector<int> :: iterator vit;
+	for(it=fans.begin();it!=fans.end();it++)
+	{
+		vector<int> test = *it;	
+		for(vit= test.begin();vit!= test.end();vit++){
+			cout << *vit << " ";
+		}
+		cout << "\n";
+		  }	*/  
+        
+    }
+};

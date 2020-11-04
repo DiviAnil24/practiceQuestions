@@ -1,0 +1,70 @@
+Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+
+(i.e., [0,0,1,2,2,5,6] might become [2,5,6,0,0,1,2]).
+
+You are given a target value to search. If found in the array return true, otherwise return false.
+
+Example 1:
+
+Input: nums = [2,5,6,0,0,1,2], target = 0
+Output: true
+Example 2:
+
+Input: nums = [2,5,6,0,0,1,2], target = 3
+Output: false
+Follow up:
+
+This is a follow up problem to Search in Rotated Sorted Array, where nums may contain duplicates.
+Would this affect the run-time complexity? How and why?class Solution {
+public:
+    bool search(vector<int>& nums, int target) {
+        int n;
+        n= nums.size();
+        if(n==0)
+            return false;
+	int pivot = findpivot(nums,0,n-1);
+	int ans;
+	//cout << pivot << " ";	
+    if(nums[pivot]== target)
+        ans=pivot;
+	else if(pivot==n-1){
+		ans= binarysearch(nums,0,n-1,target);	
+	}
+	else if(target < nums[0])
+		ans= binarysearch(nums,pivot+1,n-1,target);
+	else
+		ans = binarysearch(nums,0,pivot-1,target);
+	cout << ans ;	
+    if(ans==-1)
+        return false;
+     return true;   
+		
+    }
+    int findpivot(vector <int> nums,int low,int high){
+	if(high<low)
+		return -1;
+	if(low==high)
+		return low;
+	int mid = low + (high-low)/2;
+        if(nums[mid]==nums[low])
+            return findpivot(nums,low+1,high);
+	if(low<mid && nums[mid]<nums[mid-1])
+		return mid-1;
+	if(mid<high && nums[mid] > nums[mid+1])
+		return mid;
+	if(nums[low]<=nums[mid])
+		return findpivot(nums,mid+1,high);
+	return findpivot(nums,low,mid);		
+	
+}
+    int binarysearch(vector<int>a,int low,int high,int target){
+	if(high < low)
+	return -1;
+	int mid = low + (high-low)/2;
+	if(a[mid]==target)
+		return mid;
+	if(target < a[mid])
+		return binarysearch(a,low,mid-1,target);
+	return binarysearch(a,mid+1,high,target);	
+}
+};
